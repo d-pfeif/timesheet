@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
-import { useModal } from "../../../store/ModalContext";
 
-const TimesheetModal = () => {
-  const { isModalOpen, closeModal } = useModal();
+const TimesheetModal = ({ open, onClose }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
   return (
-    <Modal
-      title="Timesheet Details"
-      open={isModalOpen}
-      handleClose={closeModal}
-    >
+    <Modal title="Timesheet Details" open={open} handleClose={onClose}>
       <input
         type="text"
         placeholder="Name"

@@ -7,18 +7,18 @@ export const useModal = () => {
 };
 
 export const ModalProvider = ({ children }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modals, setModals] = useState({});
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openModal = (modalName) => {
+    setModals({ ...modals, [modalName]: true });
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeModal = (modalName) => {
+    setModals({ ...modals, [modalName]: false });
   };
 
   return (
-    <ModalContext.Provider value={{ isModalOpen, openModal, closeModal }}>
+    <ModalContext.Provider value={{ modals, openModal, closeModal }}>
       {children}
     </ModalContext.Provider>
   );
