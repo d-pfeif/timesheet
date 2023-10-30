@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import TimesheetIndexPage from "./pages/TimesheetIndexPage";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
+import { ModalProvider } from "./store/ModalContext";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ModalProvider>
+      <RouterProvider router={router} />
+    </ModalProvider>
   </React.StrictMode>
 );
 
