@@ -10,10 +10,8 @@ const TimesheetIndexPage = () => {
     <>
       <Header title="Your Timesheets" />
 
-      <Button onClick={() => openModal("timesheet")}>
-        Open Timesheet Modal
-      </Button>
-      <Button onClick={() => openModal("another")}>Open Another Modal</Button>
+      <Button onClick={() => openModal("timesheet")}>Create a Timesheet</Button>
+
       <TimesheetModal
         open={modals.timesheet || false}
         onClose={() => closeModal("timesheet")}
