@@ -1,14 +1,14 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import TimesheetPage from "./pages/TimesheetPage";
+import TimesheetIndexPage from "./pages/TimesheetIndexPage";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <TimesheetPage />,
+    element: <TimesheetIndexPage />,
   },
 ]);
 
