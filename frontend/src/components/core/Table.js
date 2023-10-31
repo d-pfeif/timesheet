@@ -10,12 +10,22 @@ import {
 } from "@mui/material";
 
 const CustomTable = ({ headers, tableData, handleRowClick }) => {
-  const containerStyle = {
+  const tableContainerStyles = {
     maxWidth: "800px",
   };
 
+  const tableRowStyles = {
+    "&:last-child td, &:last-child th": { border: 0 },
+    ...(handleRowClick && {
+      "&:hover": {
+        backgroundColor: "#f0f0f0",
+        cursor: "pointer",
+      },
+    }),
+  };
+
   return (
-    <TableContainer component={Paper} sx={containerStyle}>
+    <TableContainer component={Paper} sx={tableContainerStyles}>
       <Table sx={{ minWidth: 300 }} aria-label="A table">
         <TableHead>
           <TableRow>
@@ -29,13 +39,9 @@ const CustomTable = ({ headers, tableData, handleRowClick }) => {
             tableData.map((data, index) => (
               <TableRow
                 key={index}
-                sx={{
-                  "&:last-child td, &:last-child th": { border: 0 },
-                  "&:hover": { backgroundColor: "#f0f0f0" },
-                  cursor: "pointer",
-                }}
+                sx={tableRowStyles}
                 onClick={() => {
-                  handleRowClick(data);
+                  handleRowClick && handleRowClick(data);
                 }}
               >
                 {Object.values(data).map((value, i) => (
