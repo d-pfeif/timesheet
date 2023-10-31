@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 import Grid from "@mui/material/Unstable_Grid2/";
 import { Button, TextField, Stack } from "@mui/material";
@@ -12,8 +11,6 @@ const LineItemModal = ({ open, onClose, lineItem = {} }) => {
   const [date, setDate] = useState(lineItem.date || "");
   const [minutes, setMinutes] = useState(lineItem.minutes || "");
   const [saving, setSaving] = useState(false);
-
-  const navigate = useNavigate();
 
   const closeTimesheetModal = () => {
     onClose();
