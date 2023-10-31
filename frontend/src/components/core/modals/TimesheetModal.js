@@ -12,8 +12,20 @@ const TimesheetModal = ({ open, onClose }) => {
     console.log(description);
   };
 
+  const closeTimesheetModal = () => {
+    onClose();
+    setTimeout(() => {
+      setName("");
+      setDescription("");
+    }, 500);
+  };
+
   return (
-    <Modal title="Timesheet Details" open={open} handleClose={onClose}>
+    <Modal
+      title="Timesheet Details"
+      open={open}
+      handleClose={closeTimesheetModal}
+    >
       <Grid container spacing={3}>
         <Grid xs={12}>
           <TextField
@@ -36,7 +48,11 @@ const TimesheetModal = ({ open, onClose }) => {
         </Grid>
         <Grid xs={12}>
           <Stack direction="row" justifyContent="space-between">
-            <Button variant="outlined" color="error" onClick={onClose}>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={closeTimesheetModal}
+            >
               Close
             </Button>
             <Button variant="contained" onClick={handleSave}>
