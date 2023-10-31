@@ -23,6 +23,7 @@ const TimesheetModal = ({ open, onClose }) => {
         },
       })
       .then((res) => {
+        onClose();
         navigate("/timesheets/" + res.data.id);
       })
       .catch((error) => {
