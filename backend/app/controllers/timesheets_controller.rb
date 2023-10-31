@@ -16,7 +16,7 @@ class TimesheetsController < ApplicationController
   end
   
   def index
-    timesheets = Timesheet.all
+    timesheets = Timesheet.all.order(created_at: :asc)
     render json: timesheets
   end
 
