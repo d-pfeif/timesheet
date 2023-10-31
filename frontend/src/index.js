@@ -7,11 +7,23 @@ import "./index.css";
 
 import TimesheetIndexPage from "./pages/TimesheetIndexPage";
 import TimesheetShowPage from "./pages/TimesheetShowPage";
+import axios from "./utils/axiosConfig";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <TimesheetIndexPage />,
+    loader: () => {
+      return axios
+        .get("/timesheets")
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          console.error("Error loading data:", error);
+          throw error;
+        });
+    },
   },
   {
     path: "timesheets/:id",

@@ -4,23 +4,14 @@ import Button from "@mui/material/Button";
 import TimesheetModal from "../components/core/modals/TimesheetModal";
 import Table from "../components/core/Table";
 import Grid from "@mui/material/Unstable_Grid2/";
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 const TimesheetIndexPage = () => {
   const { openModal, closeModal, modals } = useModal();
   const navigate = useNavigate();
 
   const headers = [{ label: "Name" }, { label: "Created At" }];
-  const tableData = [
-    {
-      name: "My Timesheet",
-      created_at: "2023-10-23",
-    },
-    {
-      name: "Your Timesheet",
-      created_at: "2023-10-27",
-    },
-  ];
+  const tableData = useLoaderData();
 
   return (
     <>
