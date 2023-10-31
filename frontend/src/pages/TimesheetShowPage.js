@@ -4,6 +4,7 @@ import Grid from "@mui/material/Unstable_Grid2/";
 import Table from "../components/core/Table";
 import { Card, Button } from "@mui/material";
 import TimesheetModal from "../components/core/modals/TimesheetModal";
+import LineItemModal from "../components/core/modals/LineItemModal";
 import { useModal } from "../store/ModalContext";
 
 const TimesheetShowPage = () => {
@@ -52,7 +53,9 @@ const TimesheetShowPage = () => {
               <p>Total Cost: $200</p>
             </Grid>
             <Grid xs={12} display="flex" justifyContent="center">
-              <Button>Create a Line Item</Button>
+              <Button onClick={() => openModal("lineItem")}>
+                Create a Line Item
+              </Button>
             </Grid>
             <Grid xs={12} display="flex" justifyContent="center">
               <Table
@@ -71,6 +74,10 @@ const TimesheetShowPage = () => {
         open={modals.timesheet || false}
         onClose={() => closeModal("timesheet")}
         timesheet={{ id: id, name: name, description: description }}
+      />
+      <LineItemModal
+        open={modals.lineItem || false}
+        onClose={() => closeModal("lineItem")}
       />
     </>
   );
