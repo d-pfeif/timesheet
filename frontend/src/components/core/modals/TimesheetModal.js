@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "./Modal";
 import Grid from "@mui/material/Unstable_Grid2/";
 import { Button, TextField, Stack } from "@mui/material";
+import axios from "../../../utils/axiosConfig";
 
 const TimesheetModal = ({ open, onClose }) => {
   const [name, setName] = useState("");
@@ -10,6 +11,20 @@ const TimesheetModal = ({ open, onClose }) => {
   const handleSave = () => {
     console.log(name);
     console.log(description);
+    axios
+      .post("/timesheets", {
+        timesheet: {
+          name: name,
+          description: description,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.error("Error loading data:", error);
+        throw error;
+      });
   };
 
   const closeTimesheetModal = () => {

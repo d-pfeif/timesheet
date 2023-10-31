@@ -6,12 +6,22 @@ import Table from "../components/core/Table";
 import Grid from "@mui/material/Unstable_Grid2/";
 import { useLoaderData, useNavigate } from "react-router-dom";
 
+function formatDate(isoDateString) {
+  const date = new Date(isoDateString);
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  return date.toLocaleDateString(undefined, options);
+}
+
 const TimesheetIndexPage = () => {
   const { openModal, closeModal, modals } = useModal();
   const navigate = useNavigate();
 
   const headers = [{ label: "Name" }, { label: "Created At" }];
-  const tableData = useLoaderData();
+  const data = useLoaderData();
+  const tableData = data.map((x) => ({
+    name: x.name,
+    createdAt: formatDate(x.created_at),
+  }));
 
   return (
     <>
