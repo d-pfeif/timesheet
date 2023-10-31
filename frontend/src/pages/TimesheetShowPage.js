@@ -7,7 +7,7 @@ import TimesheetModal from "../components/core/modals/TimesheetModal";
 import { useModal } from "../store/ModalContext";
 
 const TimesheetShowPage = () => {
-  const { name, description } = useLoaderData();
+  const { id, name, description } = useLoaderData();
   const navigate = useNavigate();
   const { openModal, closeModal, modals } = useModal();
 
@@ -70,7 +70,7 @@ const TimesheetShowPage = () => {
       <TimesheetModal
         open={modals.timesheet || false}
         onClose={() => closeModal("timesheet")}
-        timesheet={{ name: name, description: description }}
+        timesheet={{ id: id, name: name, description: description }}
       />
     </>
   );

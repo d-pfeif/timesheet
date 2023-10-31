@@ -7,6 +7,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useNavigate } from "react-router-dom";
 
 const TimesheetModal = ({ open, onClose, timesheet = {} }) => {
+  const [id, setId] = useState(timesheet.id || "");
   const [name, setName] = useState(timesheet.name || "");
   const [description, setDescription] = useState(timesheet.description || "");
   const [saving, setSaving] = useState(false);
@@ -15,26 +16,46 @@ const TimesheetModal = ({ open, onClose, timesheet = {} }) => {
   const handleSave = () => {
     setSaving(true);
 
-    axios
-      .post("/timesheets", {
-        timesheet: {
+    if (timesheet.id) {
+      axios
+        .put("/timesheets/" + timesheet.id, {
           name: name,
           description: description,
-        },
-      })
-      .then((res) => {
-        onClose();
-        navigate("/timesheets/" + res.data.id);
-      })
-      .catch((error) => {
-        console.error("Error loading data:", error);
-        throw error;
-      });
+        })
+        .then((res) => {
+          onClose();
+          navigate("/timesheets/" + res.data.id);
+        })
+        .catch((error) => {
+          console.error("Error loading data:", error);
+          throw error;
+        })
+        .finally(() => {
+          setSaving(false);
+        });
+    } else {
+      axios
+        .post("/timesheets", {
+          timesheet: {
+            name: name,
+            description: description,
+          },
+        })
+        .then((res) => {
+          onClose();
+          navigate("/timesheets/" + res.data.id);
+        })
+        .catch((error) => {
+          console.error("Error loading data:", error);
+          throw error;
+        });
+    }
   };
 
   const closeTimesheetModal = () => {
     onClose();
     setTimeout(() => {
+      setId(timesheet.id || "");
       setName(timesheet.name || "");
       setDescription(timesheet.description || "");
       setSaving(false);
