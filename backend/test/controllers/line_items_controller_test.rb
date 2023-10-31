@@ -42,7 +42,6 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
         line_item: {
           date: Date.today,
           minutes: 30,
-          rate: 15.0,
           timesheet_id: @timesheet.id
         }
       }

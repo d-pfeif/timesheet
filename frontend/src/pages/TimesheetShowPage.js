@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import Header from "../layouts/Header";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Unstable_Grid2/";
@@ -6,15 +7,31 @@ import { Card, Button } from "@mui/material";
 import TimesheetModal from "../components/core/modals/TimesheetModal";
 import LineItemModal from "../components/core/modals/LineItemModal";
 import { useModal } from "../store/ModalContext";
+import axios from "../utils/axiosConfig";
 
 const TimesheetShowPage = () => {
   const { id, name, description } = useLoaderData();
   const navigate = useNavigate();
   const { openModal, closeModal, modals } = useModal();
 
-  const headers = [{ label: "Date" }, { label: "Minutes" }];
+  const headers = [{ label: "Minutes" }, { label: "Date" }];
 
-  const tableData = [];
+  const [lineItems, setLineItems] = useState([]);
+
+  useEffect(() => {
+    console.log("hit");
+    // Fetch line items related to the timesheet when the component loads
+    axios
+      .get(`/line_items`, { params: { timesheet_id: id } })
+      .then((response) => {
+        setLineItems(
+          response.data.map((x) => ({ minutes: x.minutes, date: x.date }))
+        );
+      })
+      .catch((error) => {
+        console.error("Error loading line items:", error);
+      });
+  }, [lineItems.length]);
 
   return (
     <>
@@ -58,13 +75,7 @@ const TimesheetShowPage = () => {
               </Button>
             </Grid>
             <Grid xs={12} display="flex" justifyContent="center">
-              <Table
-                headers={headers}
-                tableData={tableData}
-                handleRowClick={(data) => {
-                  navigate("/timesheets/" + data.id);
-                }}
-              />
+              <Table headers={headers} tableData={lineItems} />
             </Grid>
           </Grid>
         </Card>
@@ -78,6 +89,7 @@ const TimesheetShowPage = () => {
       <LineItemModal
         open={modals.lineItem || false}
         onClose={() => closeModal("lineItem")}
+        lineItem={{ timesheetId: id }}
       />
     </>
   );

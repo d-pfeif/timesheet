@@ -31,16 +31,17 @@ const LineItemModal = ({ open, onClose, lineItem = {} }) => {
     const requestData = {
       date: date,
       minutes: minutes,
+      timesheet_id: lineItem.timesheetId,
     };
 
     const request = lineItem.id
-      ? axios.patch("/lineItems/" + lineItem.id, requestData)
-      : axios.post("/lineItems", { line_item: requestData });
+      ? axios.patch("/line_items/" + lineItem.id, requestData)
+      : axios.post("/line_items", { line_item: requestData });
 
     request
       .then((res) => {
         onClose();
-        navigate("/timesheets/" + res.data.timesheet_id);
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error loading data:", error);
