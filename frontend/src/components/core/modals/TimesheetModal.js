@@ -16,40 +16,27 @@ const TimesheetModal = ({ open, onClose, timesheet = {} }) => {
   const handleSave = () => {
     setSaving(true);
 
-    if (timesheet.id) {
-      axios
-        .put("/timesheets/" + timesheet.id, {
-          name: name,
-          description: description,
-        })
-        .then((res) => {
-          onClose();
-          navigate("/timesheets/" + res.data.id);
-        })
-        .catch((error) => {
-          console.error("Error loading data:", error);
-          throw error;
-        })
-        .finally(() => {
-          setSaving(false);
-        });
-    } else {
-      axios
-        .post("/timesheets", {
-          timesheet: {
-            name: name,
-            description: description,
-          },
-        })
-        .then((res) => {
-          onClose();
-          navigate("/timesheets/" + res.data.id);
-        })
-        .catch((error) => {
-          console.error("Error loading data:", error);
-          throw error;
-        });
-    }
+    const requestData = {
+      name: name,
+      description: description,
+    };
+
+    const request = timesheet.id
+      ? axios.patch("/timesheets/" + timesheet.id, requestData)
+      : axios.post("/timesheets", { timesheet: requestData });
+
+    request
+      .then((res) => {
+        onClose();
+        navigate("/timesheets/" + res.data.id);
+      })
+      .catch((error) => {
+        console.error("Error loading data:", error);
+        throw error;
+      })
+      .finally(() => {
+        setSaving(false);
+      });
   };
 
   const closeTimesheetModal = () => {
