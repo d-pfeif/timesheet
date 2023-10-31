@@ -3,10 +3,13 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Unstable_Grid2/";
 import Table from "../components/core/Table";
 import { Card, Button } from "@mui/material";
+import TimesheetModal from "../components/core/modals/TimesheetModal";
+import { useModal } from "../store/ModalContext";
 
 const TimesheetShowPage = () => {
   const { name, description } = useLoaderData();
   const navigate = useNavigate();
+  const { openModal, closeModal, modals } = useModal();
 
   const headers = [{ label: "Date" }, { label: "Minutes" }];
 
@@ -23,7 +26,7 @@ const TimesheetShowPage = () => {
         >
           Back
         </Button>
-        <Button>Edit</Button>
+        <Button onClick={() => openModal("timesheet")}>Edit</Button>
       </Grid>
       <Grid
         container
@@ -63,6 +66,12 @@ const TimesheetShowPage = () => {
           </Grid>
         </Card>
       </Grid>
+
+      <TimesheetModal
+        open={modals.timesheet || false}
+        onClose={() => closeModal("timesheet")}
+        timesheet={{ name: name, description: description }}
+      />
     </>
   );
 };

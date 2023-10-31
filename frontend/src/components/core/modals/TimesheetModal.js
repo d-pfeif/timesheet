@@ -6,9 +6,9 @@ import axios from "../../../utils/axiosConfig";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useNavigate } from "react-router-dom";
 
-const TimesheetModal = ({ open, onClose }) => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+const TimesheetModal = ({ open, onClose, timesheet = {} }) => {
+  const [name, setName] = useState(timesheet.name || "");
+  const [description, setDescription] = useState(timesheet.description || "");
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
 
@@ -35,8 +35,8 @@ const TimesheetModal = ({ open, onClose }) => {
   const closeTimesheetModal = () => {
     onClose();
     setTimeout(() => {
-      setName("");
-      setDescription("");
+      setName(timesheet.name || "");
+      setDescription(timesheet.description || "");
       setSaving(false);
     }, 500);
   };
