@@ -9,7 +9,7 @@ import {
   Paper,
 } from "@mui/material";
 
-const CustomTable = ({ headers, tableData }) => {
+const CustomTable = ({ headers, tableData, handleRowClick }) => {
   const containerStyle = {
     maxWidth: "800px",
   };
@@ -29,7 +29,14 @@ const CustomTable = ({ headers, tableData }) => {
             tableData.map((data, index) => (
               <TableRow
                 key={index}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { backgroundColor: "#f0f0f0" },
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  handleRowClick(data);
+                }}
               >
                 {Object.values(data).map((value, i) => (
                   <TableCell key={i}>{value}</TableCell>
@@ -38,7 +45,10 @@ const CustomTable = ({ headers, tableData }) => {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={2} style={{ textAlign: "center" }}>
+              <TableCell
+                colSpan={headers.length}
+                style={{ textAlign: "center" }}
+              >
                 No data.
               </TableCell>
             </TableRow>

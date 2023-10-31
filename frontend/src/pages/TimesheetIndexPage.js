@@ -14,6 +14,10 @@ const TimesheetIndexPage = () => {
       name: "My Timesheet",
       created_at: "2023-10-23",
     },
+    {
+      name: "Your Timesheet",
+      created_at: "2023-10-27",
+    },
   ];
 
   return (
@@ -26,7 +30,13 @@ const TimesheetIndexPage = () => {
           </Button>
         </Grid>
         <Grid xs={12} display="flex" justifyContent="center">
-          <Table headers={headers} tableData={tableData} />
+          <Table
+            headers={headers}
+            tableData={tableData}
+            handleRowClick={(data) => {
+              console.log("hit", data);
+            }}
+          />
         </Grid>
 
         <TimesheetModal
