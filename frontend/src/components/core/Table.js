@@ -30,7 +30,9 @@ const CustomTable = ({ headers, tableData, handleRowClick }) => {
         <TableHead>
           <TableRow>
             {headers.map((header) => (
-              <TableCell key={header.label}>{header.label}</TableCell>
+              <TableCell key={header.label} sx={{ tableLayout: "auto" }}>
+                {header.label}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>

@@ -28,6 +28,18 @@ const router = createBrowserRouter([
   {
     path: "timesheets/:id",
     element: <TimesheetShowPage />,
+    loader: ({ params }) => {
+      return axios
+        .get("/timesheets/" + params.id)
+        .then((response) => {
+          console.log(response.data);
+          return response.data;
+        })
+        .catch((error) => {
+          console.error("Error loading data:", error);
+          throw error;
+        });
+    },
   },
 ]);
 

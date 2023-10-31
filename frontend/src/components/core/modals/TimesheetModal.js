@@ -3,14 +3,18 @@ import Modal from "./Modal";
 import Grid from "@mui/material/Unstable_Grid2/";
 import { Button, TextField, Stack } from "@mui/material";
 import axios from "../../../utils/axiosConfig";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useNavigate } from "react-router-dom";
 
 const TimesheetModal = ({ open, onClose }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [saving, setSaving] = useState(false);
+  const navigate = useNavigate();
 
   const handleSave = () => {
-    console.log(name);
-    console.log(description);
+    setSaving(true);
+
     axios
       .post("/timesheets", {
         timesheet: {
@@ -19,7 +23,7 @@ const TimesheetModal = ({ open, onClose }) => {
         },
       })
       .then((res) => {
-        console.log(res);
+        navigate("/timesheets/" + res.data.id);
       })
       .catch((error) => {
         console.error("Error loading data:", error);
@@ -32,6 +36,7 @@ const TimesheetModal = ({ open, onClose }) => {
     setTimeout(() => {
       setName("");
       setDescription("");
+      setSaving(false);
     }, 500);
   };
 
@@ -70,9 +75,14 @@ const TimesheetModal = ({ open, onClose }) => {
             >
               Close
             </Button>
-            <Button variant="contained" onClick={handleSave}>
+            <LoadingButton
+              loading={saving}
+              disabled={!name || !description}
+              variant="contained"
+              onClick={handleSave}
+            >
               Save
-            </Button>
+            </LoadingButton>
           </Stack>
         </Grid>
       </Grid>

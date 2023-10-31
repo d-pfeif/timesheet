@@ -16,9 +16,14 @@ const TimesheetIndexPage = () => {
   const { openModal, closeModal, modals } = useModal();
   const navigate = useNavigate();
 
-  const headers = [{ label: "Name" }, { label: "Created At" }];
+  const headers = [
+    { label: "ID", shrink: true },
+    { label: "Name" },
+    { label: "Created At", shrink: true },
+  ];
   const data = useLoaderData();
   const tableData = data.map((x) => ({
+    id: x.id,
     name: x.name,
     createdAt: formatDate(x.created_at),
   }));
@@ -37,7 +42,7 @@ const TimesheetIndexPage = () => {
             headers={headers}
             tableData={tableData}
             handleRowClick={(data) => {
-              navigate("/timesheets/123");
+              navigate("/timesheets/" + data.id);
             }}
           />
         </Grid>
