@@ -4,9 +4,11 @@ import Button from "@mui/material/Button";
 import TimesheetModal from "../components/core/modals/TimesheetModal";
 import Table from "../components/core/Table";
 import Grid from "@mui/material/Unstable_Grid2/";
+import { useNavigate } from "react-router-dom";
 
 const TimesheetIndexPage = () => {
   const { openModal, closeModal, modals } = useModal();
+  const navigate = useNavigate();
 
   const headers = [{ label: "Name" }, { label: "Created At" }];
   const tableData = [
@@ -34,7 +36,7 @@ const TimesheetIndexPage = () => {
             headers={headers}
             tableData={tableData}
             handleRowClick={(data) => {
-              console.log("hit", data);
+              navigate("/timesheets/123");
             }}
           />
         </Grid>

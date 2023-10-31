@@ -1,15 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import TimesheetIndexPage from "./pages/TimesheetIndexPage";
 import reportWebVitals from "./reportWebVitals";
-import "./index.css";
 import { ModalProvider } from "./store/ModalContext";
+import "./index.css";
+
+import TimesheetIndexPage from "./pages/TimesheetIndexPage";
+import TimesheetShowPage from "./pages/TimesheetShowPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <TimesheetIndexPage />,
+  },
+  {
+    path: "timesheets/:id",
+    element: <TimesheetShowPage />,
   },
 ]);
 
