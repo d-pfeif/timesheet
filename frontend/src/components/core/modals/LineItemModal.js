@@ -5,6 +5,7 @@ import Grid from "@mui/material/Unstable_Grid2/";
 import { Button, TextField, Stack } from "@mui/material";
 import axios from "../../../utils/axiosConfig";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const LineItemModal = ({ open, onClose, lineItem = {} }) => {
   const [id, setId] = useState(lineItem.id || "");
@@ -66,19 +67,18 @@ const LineItemModal = ({ open, onClose, lineItem = {} }) => {
       open={open}
       handleClose={closeTimesheetModal}
     >
-      <Grid container spacing={3}>
-        <Grid xs={12}>
-          <TextField
+      <Grid container spacing={2} style={{ paddingTop: "8px" }}>
+        <Grid xs>
+          <DatePicker
             label="Date"
-            variant="standard"
-            fullWidth
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          ></TextField>
+            value={date || null}
+            onChange={(newDate) => setDate(newDate)}
+          />
         </Grid>
-        <Grid xs={12}>
+        <Grid xs>
           <TextField
             label="Minutes"
+            type="number"
             fullWidth
             rows={4}
             value={minutes}

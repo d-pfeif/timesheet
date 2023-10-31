@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import { ModalProvider } from "./store/ModalContext";
 import "./index.css";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
 import TimesheetIndexPage from "./pages/TimesheetIndexPage";
 import TimesheetShowPage from "./pages/TimesheetShowPage";
@@ -45,9 +47,11 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ModalProvider>
-      <RouterProvider router={router} />
-    </ModalProvider>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
+      <ModalProvider>
+        <RouterProvider router={router} />
+      </ModalProvider>
+    </LocalizationProvider>
   </React.StrictMode>
 );
 
