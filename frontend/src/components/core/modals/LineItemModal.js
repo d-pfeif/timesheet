@@ -36,7 +36,7 @@ const LineItemModal = ({ open, onClose, lineItem = {} }) => {
       : axios.post("/line_items", { line_item: requestData });
 
     request
-      .then((res) => {
+      .then(() => {
         onClose();
         window.location.reload();
       })

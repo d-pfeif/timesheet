@@ -12,6 +12,7 @@ import {
 const CustomTable = ({ headers, tableData, handleRowClick }) => {
   const tableContainerStyles = {
     maxWidth: "800px",
+    maxHeight: "400px",
   };
 
   const tableRowStyles = {

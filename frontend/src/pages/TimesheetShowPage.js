@@ -3,11 +3,12 @@ import Header from "../layouts/Header";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Unstable_Grid2/";
 import Table from "../components/core/Table";
-import { Card, Button } from "@mui/material";
+import { Card, Button, TextField, InputAdornment } from "@mui/material";
 import TimesheetModal from "../components/core/modals/TimesheetModal";
 import LineItemModal from "../components/core/modals/LineItemModal";
 import { useModal } from "../store/ModalContext";
 import axios from "../utils/axiosConfig";
+import moment from "moment";
 
 const TimesheetShowPage = () => {
   const { id, name, description } = useLoaderData();
@@ -17,21 +18,28 @@ const TimesheetShowPage = () => {
   const headers = [{ label: "Minutes" }, { label: "Date" }];
 
   const [lineItems, setLineItems] = useState([]);
+  const [rate, setRate] = useState(0.0);
 
   useEffect(() => {
-    console.log("hit");
     // Fetch line items related to the timesheet when the component loads
     axios
       .get(`/line_items`, { params: { timesheet_id: id } })
       .then((response) => {
         setLineItems(
-          response.data.map((x) => ({ minutes: x.minutes, date: x.date }))
+          response.data.map((x) => ({
+            minutes: x.minutes,
+            date: moment(x.date).format("MMMM Do YYYY"),
+          }))
         );
       })
       .catch((error) => {
         console.error("Error loading line items:", error);
       });
-  }, [lineItems.length]);
+  }, [id, lineItems.length]);
+
+  const totalTime = lineItems
+    .map((x) => x.minutes)
+    .reduce((pv, cv) => pv + cv, 0);
 
   return (
     <>
@@ -60,15 +68,6 @@ const TimesheetShowPage = () => {
               <p>{description}</p>
             </Grid>
 
-            <Grid xs={4} display="flex" justifyContent="center">
-              <p>Rate: 14.00</p>
-            </Grid>
-            <Grid xs={4} display="flex" justifyContent="center">
-              <p>Total Time: 60 min</p>
-            </Grid>
-            <Grid xs={4} display="flex" justifyContent="center">
-              <p>Total Cost: $200</p>
-            </Grid>
             <Grid xs={12} display="flex" justifyContent="center">
               <Button onClick={() => openModal("lineItem")}>
                 Create a Line Item
@@ -76,6 +75,34 @@ const TimesheetShowPage = () => {
             </Grid>
             <Grid xs={12} display="flex" justifyContent="center">
               <Table headers={headers} tableData={lineItems} />
+            </Grid>
+            <Grid xs={6} sm={3} display="flex" justifyContent="center">
+              <p>Total Line Items: {lineItems.length}</p>
+            </Grid>
+            <Grid xs={6} sm={3} display="flex" justifyContent="center">
+              <p>Total Time: {totalTime} min</p>
+            </Grid>
+            <Grid xs={6} sm={3} display="flex" justifyContent="center">
+              {/* <p>Rate: 14.00</p> */}
+              <TextField
+                label="Rate"
+                type="number"
+                variant="standard"
+                inputProps={{
+                  step: "0.01",
+                  min: "0",
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">$</InputAdornment>
+                  ),
+                }}
+                value={rate}
+                onChange={(e) => setRate(e.target.value)}
+              />
+            </Grid>
+            <Grid xs={6} sm={3} display="flex" justifyContent="center">
+              <p>Total Cost: ${(rate * totalTime).toFixed(2)}</p>
             </Grid>
           </Grid>
         </Card>

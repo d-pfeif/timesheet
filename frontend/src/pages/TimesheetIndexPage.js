@@ -5,12 +5,7 @@ import TimesheetModal from "../components/core/modals/TimesheetModal";
 import Table from "../components/core/Table";
 import Grid from "@mui/material/Unstable_Grid2/";
 import { useLoaderData, useNavigate } from "react-router-dom";
-
-function formatDate(isoDateString) {
-  const date = new Date(isoDateString);
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  return date.toLocaleDateString(undefined, options);
-}
+import moment from "moment";
 
 const TimesheetIndexPage = () => {
   const { openModal, closeModal, modals } = useModal();
@@ -25,7 +20,7 @@ const TimesheetIndexPage = () => {
   const tableData = data.map((x) => ({
     id: x.id,
     name: x.name,
-    createdAt: formatDate(x.created_at),
+    createdAt: moment(x.created_at).format("MMMM Do YYYY"),
   }));
 
   return (
