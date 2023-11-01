@@ -1,11 +1,11 @@
-import { useModal } from "../store/ModalContext";
-import Header from "../layouts/Header";
-import Button from "@mui/material/Button";
-import TimesheetModal from "../components/core/modals/TimesheetModal";
-import Table from "../components/core/Table";
-import Grid from "@mui/material/Unstable_Grid2/";
-import { useLoaderData, useNavigate } from "react-router-dom";
 import moment from "moment";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { useModal } from "../store/ModalContext";
+import { Button } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2/";
+import Header from "../layouts/Header";
+import Table from "../components/core/Table";
+import TimesheetModal from "../components/core/modals/TimesheetModal";
 
 const TimesheetIndexPage = () => {
   const { openModal, closeModal, modals } = useModal();
@@ -16,6 +16,7 @@ const TimesheetIndexPage = () => {
     { label: "Name" },
     { label: "Created At", shrink: true },
   ];
+
   const data = useLoaderData();
   const tableData = data.map((x) => ({
     id: x.id,
