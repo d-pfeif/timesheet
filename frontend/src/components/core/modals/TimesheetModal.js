@@ -6,7 +6,7 @@ import axios from "../../../utils/axiosConfig";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useNavigate } from "react-router-dom";
 
-const TimesheetModal = ({ open, onClose, timesheet = {} }) => {
+const TimesheetModal = ({ open, onClose, timesheet = {}, updateTimesheet }) => {
   const [id, setId] = useState(timesheet.id || "");
   const [name, setName] = useState(timesheet.name || "");
   const [description, setDescription] = useState(timesheet.description || "");
@@ -28,7 +28,11 @@ const TimesheetModal = ({ open, onClose, timesheet = {} }) => {
     request
       .then((res) => {
         onClose();
-        navigate("/timesheets/" + res.data.id);
+        if (id) {
+          updateTimesheet(res.data);
+        } else {
+          navigate("/timesheets/" + res.data.id);
+        }
       })
       .catch((error) => {
         console.error("Error loading data:", error);

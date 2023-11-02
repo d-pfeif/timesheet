@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import Modal from "./Modal";
 import Grid from "@mui/material/Unstable_Grid2/";
 import { Button, TextField, Stack } from "@mui/material";
-import axios from "../../../utils/axiosConfig";
-import LoadingButton from "@mui/lab/LoadingButton";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import LoadingButton from "@mui/lab/LoadingButton";
+import axios from "../../../utils/axiosConfig";
+import moment from "moment";
 
 const LineItemModal = ({ open, onClose, lineItem = {}, addLineItem }) => {
   const [id, setId] = useState(lineItem.id || "");
@@ -36,8 +37,11 @@ const LineItemModal = ({ open, onClose, lineItem = {}, addLineItem }) => {
       : axios.post("/line_items", { line_item: requestData });
 
     request
-      .then((response) => {
-        addLineItem(response.data);
+      .then((res) => {
+        addLineItem({
+          minutes: res.data.minutes,
+          date: moment(res.data.date).format("MMMM Do YYYY"),
+        });
         closeLineItemModal();
       })
       .catch((error) => {

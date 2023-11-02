@@ -11,16 +11,19 @@ import axios from "../utils/axiosConfig";
 import moment from "moment";
 
 const TimesheetShowPage = () => {
-  const { id, name, description } = useLoaderData();
+  // State and hooks
+  const loaderData = useLoaderData();
   const navigate = useNavigate();
   const { openModal, closeModal, modals } = useModal();
-
   const headers = [{ label: "Minutes" }, { label: "Date" }];
-
+  const id = loaderData.id;
+  const [name, setName] = useState(loaderData.name);
+  const [description, setDescription] = useState(loaderData.description);
   const [lineItems, setLineItems] = useState([]);
   const [rate, setRate] = useState(0.0);
 
   useEffect(() => {
+    console.log("hit");
     // Fetch line items related to the timesheet when the component loads
     axios
       .get(`/line_items`, { params: { timesheet_id: id } })
@@ -35,15 +38,19 @@ const TimesheetShowPage = () => {
       .catch((error) => {
         console.error("Error loading line items:", error);
       });
-  }, [id, lineItems.length]);
+  }, [id]);
 
   const totalTime = lineItems
     .map((x) => x.minutes)
     .reduce((pv, cv) => pv + cv, 0);
 
   const addLineItem = (lineItem) => {
-    // Update the lineItems array with the new line item
     setLineItems((prevLineItems) => [...prevLineItems, lineItem]);
+  };
+
+  const updateTimesheet = (updatedTimesheet) => {
+    setName(updatedTimesheet.name);
+    setDescription(updatedTimesheet.description);
   };
 
   return (
@@ -88,7 +95,6 @@ const TimesheetShowPage = () => {
               <p>Total Time: {totalTime} min</p>
             </Grid>
             <Grid xs={6} sm={3} display="flex" justifyContent="center">
-              {/* <p>Rate: 14.00</p> */}
               <TextField
                 label="Rate"
                 type="number"
@@ -117,6 +123,7 @@ const TimesheetShowPage = () => {
         open={modals.timesheet || false}
         onClose={() => closeModal("timesheet")}
         timesheet={{ id: id, name: name, description: description }}
+        updateTimesheet={updateTimesheet}
       />
       <LineItemModal
         open={modals.lineItem || false}

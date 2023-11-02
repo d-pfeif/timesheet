@@ -34,7 +34,6 @@ const router = createBrowserRouter([
       return axios
         .get("/timesheets/" + params.id)
         .then((response) => {
-          console.log(response.data);
           return response.data;
         })
         .catch((error) => {
