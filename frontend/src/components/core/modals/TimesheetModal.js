@@ -7,12 +7,26 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useNavigate } from "react-router-dom";
 
 const TimesheetModal = ({ open, onClose, timesheet = {}, updateTimesheet }) => {
+  // Initialize state and hooks
   const [id, setId] = useState(timesheet.id || "");
   const [name, setName] = useState(timesheet.name || "");
   const [description, setDescription] = useState(timesheet.description || "");
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
 
+  // Function to close the timesheet modal
+  const closeTimesheetModal = () => {
+    onClose();
+    setTimeout(() => {
+      // Clear state
+      setId(timesheet.id || "");
+      setName(timesheet.name || "");
+      setDescription(timesheet.description || "");
+      setSaving(false);
+    }, 500);
+  };
+
+  // Function to handle saving timesheet changes
   const handleSave = () => {
     setSaving(true);
 
@@ -28,6 +42,9 @@ const TimesheetModal = ({ open, onClose, timesheet = {}, updateTimesheet }) => {
     request
       .then((res) => {
         onClose();
+
+        // If viewing TimesheetShowPage, update state
+        // Otherwise transition to new timesheet.
         if (id) {
           updateTimesheet(res.data);
         } else {
@@ -36,21 +53,10 @@ const TimesheetModal = ({ open, onClose, timesheet = {}, updateTimesheet }) => {
       })
       .catch((error) => {
         console.error("Error loading data:", error);
-        throw error;
       })
       .finally(() => {
         setSaving(false);
       });
-  };
-
-  const closeTimesheetModal = () => {
-    onClose();
-    setTimeout(() => {
-      setId(timesheet.id || "");
-      setName(timesheet.name || "");
-      setDescription(timesheet.description || "");
-      setSaving(false);
-    }, 500);
   };
 
   return (

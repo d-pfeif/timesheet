@@ -10,11 +10,14 @@ import {
 } from "@mui/material";
 
 const CustomTable = ({ headers, tableData, handleRowClick }) => {
+  // Styles for the table container
   const tableContainerStyles = {
     maxWidth: "800px",
     maxHeight: "400px",
   };
 
+  // Styles for table rows, including hover effect if
+  // handleRowClick is provided
   const tableRowStyles = {
     "&:last-child td, &:last-child th": { border: 0 },
     ...(handleRowClick && {

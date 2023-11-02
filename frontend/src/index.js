@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import reportWebVitals from "./reportWebVitals";
 import { ModalProvider } from "./store/ModalContext";
 import "./index.css";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -23,7 +22,6 @@ const router = createBrowserRouter([
         })
         .catch((error) => {
           console.error("Error loading data:", error);
-          throw error;
         });
     },
   },
@@ -38,7 +36,6 @@ const router = createBrowserRouter([
         })
         .catch((error) => {
           console.error("Error loading data:", error);
-          throw error;
         });
     },
   },
@@ -53,8 +50,3 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </LocalizationProvider>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

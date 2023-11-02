@@ -11,23 +11,27 @@ import axios from "../utils/axiosConfig";
 import moment from "moment";
 
 const TimesheetShowPage = () => {
-  // State and hooks
-  const loaderData = useLoaderData();
+  // Initialize state and hooks
+  const loaderData = useLoaderData(); // Fetch data from route loader (see index.js)
   const navigate = useNavigate();
   const { openModal, closeModal, modals } = useModal();
-  const headers = [{ label: "Minutes" }, { label: "Date" }];
-  const id = loaderData.id;
-  const [name, setName] = useState(loaderData.name);
-  const [description, setDescription] = useState(loaderData.description);
   const [lineItems, setLineItems] = useState([]);
   const [rate, setRate] = useState(0.0);
 
+  // Extract data from loaderData
+  const id = loaderData.id;
+  const [name, setName] = useState(loaderData.name);
+  const [description, setDescription] = useState(loaderData.description);
+
+  // Define headers for the table
+  const headers = [{ label: "Minutes" }, { label: "Date" }];
+
+  // Effect to fetch line items when the component loads
   useEffect(() => {
-    console.log("hit");
-    // Fetch line items related to the timesheet when the component loads
     axios
       .get(`/line_items`, { params: { timesheet_id: id } })
       .then((response) => {
+        // Format and set line items in state
         setLineItems(
           response.data.map((x) => ({
             minutes: x.minutes,
@@ -40,22 +44,28 @@ const TimesheetShowPage = () => {
       });
   }, [id]);
 
+  // Calculate the total time from line items
   const totalTime = lineItems
     .map((x) => x.minutes)
     .reduce((pv, cv) => pv + cv, 0);
 
-  const addLineItem = (lineItem) => {
-    setLineItems((prevLineItems) => [...prevLineItems, lineItem]);
-  };
-
+  // Function to update timesheet data
   const updateTimesheet = (updatedTimesheet) => {
     setName(updatedTimesheet.name);
     setDescription(updatedTimesheet.description);
   };
 
+  // Function to add a line item to the list
+  const addLineItem = (lineItem) => {
+    setLineItems((prevLineItems) => [...prevLineItems, lineItem]);
+  };
+
   return (
     <>
+      {/* Render the page header */}
       <Header title="Timesheet" />
+
+      {/* Navigation buttons */}
       <Grid xs={12} display="flex" justifyContent="center">
         <Button
           onClick={() => {
@@ -66,6 +76,8 @@ const TimesheetShowPage = () => {
         </Button>
         <Button onClick={() => openModal("timesheet")}>Edit</Button>
       </Grid>
+
+      {/* Timesheet details and line items */}
       <Grid
         container
         display="flex"
@@ -74,20 +86,26 @@ const TimesheetShowPage = () => {
       >
         <Card variant="outlined" style={{ padding: "0px 24px 24px" }}>
           <Grid container spacing={2} style={{ maxWidth: "800px" }}>
+            {/* Timesheet details */}
             <Grid xs={12}>
               <h3>{name}</h3>
               <h5>Description</h5>
               <p>{description}</p>
             </Grid>
 
+            {/* Create Line Item */}
             <Grid xs={12} display="flex" justifyContent="center">
               <Button onClick={() => openModal("lineItem")}>
                 Create a Line Item
               </Button>
             </Grid>
+
+            {/* Table */}
             <Grid xs={12} display="flex" justifyContent="center">
               <Table headers={headers} tableData={lineItems} />
             </Grid>
+
+            {/* Totals and Rate */}
             <Grid xs={6} sm={3} display="flex" justifyContent="center">
               <p>Total Line Items: {lineItems.length}</p>
             </Grid>
@@ -119,6 +137,7 @@ const TimesheetShowPage = () => {
         </Card>
       </Grid>
 
+      {/* Modals */}
       <TimesheetModal
         open={modals.timesheet || false}
         onClose={() => closeModal("timesheet")}

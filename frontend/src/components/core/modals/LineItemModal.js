@@ -8,14 +8,17 @@ import axios from "../../../utils/axiosConfig";
 import moment from "moment";
 
 const LineItemModal = ({ open, onClose, lineItem = {}, addLineItem }) => {
+  // Initialize state
   const [id, setId] = useState(lineItem.id || "");
   const [date, setDate] = useState(lineItem.date || "");
   const [minutes, setMinutes] = useState(lineItem.minutes || "");
   const [saving, setSaving] = useState(false);
 
+  // Function to close the line item modal
   const closeLineItemModal = () => {
     onClose();
     setTimeout(() => {
+      // Clear state
       setId(lineItem.id || "");
       setDate(lineItem.date || "");
       setMinutes(lineItem.minutes || "");
@@ -23,6 +26,7 @@ const LineItemModal = ({ open, onClose, lineItem = {}, addLineItem }) => {
     }, 500);
   };
 
+  // Function to handle saving line item changes
   const handleSave = () => {
     setSaving(true);
 
@@ -38,6 +42,10 @@ const LineItemModal = ({ open, onClose, lineItem = {}, addLineItem }) => {
 
     request
       .then((res) => {
+        // Add the newly created item to the list
+        // If we allow users to update line items, we'd
+        // need to extend this functionality to find/update
+        // the correct line item.
         addLineItem({
           minutes: res.data.minutes,
           date: moment(res.data.date).format("MMMM Do YYYY"),
@@ -46,7 +54,6 @@ const LineItemModal = ({ open, onClose, lineItem = {}, addLineItem }) => {
       })
       .catch((error) => {
         console.error("Error loading data:", error);
-        throw error;
       })
       .finally(() => {
         setSaving(false);
@@ -77,6 +84,7 @@ const LineItemModal = ({ open, onClose, lineItem = {}, addLineItem }) => {
             onChange={(e) => setMinutes(e.target.value)}
           />
         </Grid>
+
         <Grid xs={12}>
           <Stack direction="row" justifyContent="space-between">
             <Button

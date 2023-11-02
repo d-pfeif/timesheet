@@ -8,10 +8,10 @@ import Table from "../components/core/Table";
 import TimesheetModal from "../components/core/modals/TimesheetModal";
 
 const TimesheetIndexPage = () => {
+  // Initialize state and hooks
   const { openModal, closeModal, modals } = useModal();
   const navigate = useNavigate();
-  // Fetch data from route loader (see index.js)
-  const data = useLoaderData();
+  const data = useLoaderData(); // Fetch data from route loader (see index.js)
 
   // Define headers for the table
   const headers = [
