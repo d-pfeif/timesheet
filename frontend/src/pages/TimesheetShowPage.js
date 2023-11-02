@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Header from "../layouts/Header";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import Grid from "@mui/material/Unstable_Grid2/";
-import Table from "../components/core/Table";
+import { useModal } from "../store/ModalContext";
 import { Card, Button, TextField, InputAdornment } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2/";
+import Header from "../layouts/Header";
+import Table from "../components/core/Table";
 import TimesheetModal from "../components/core/modals/TimesheetModal";
 import LineItemModal from "../components/core/modals/LineItemModal";
-import { useModal } from "../store/ModalContext";
 import axios from "../utils/axiosConfig";
 import moment from "moment";
 
@@ -40,6 +40,11 @@ const TimesheetShowPage = () => {
   const totalTime = lineItems
     .map((x) => x.minutes)
     .reduce((pv, cv) => pv + cv, 0);
+
+  const addLineItem = (lineItem) => {
+    // Update the lineItems array with the new line item
+    setLineItems((prevLineItems) => [...prevLineItems, lineItem]);
+  };
 
   return (
     <>
@@ -117,6 +122,7 @@ const TimesheetShowPage = () => {
         open={modals.lineItem || false}
         onClose={() => closeModal("lineItem")}
         lineItem={{ timesheetId: id }}
+        addLineItem={addLineItem}
       />
     </>
   );

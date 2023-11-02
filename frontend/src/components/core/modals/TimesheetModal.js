@@ -21,8 +21,8 @@ const TimesheetModal = ({ open, onClose, timesheet = {} }) => {
       description: description,
     };
 
-    const request = timesheet.id
-      ? axios.patch("/timesheets/" + timesheet.id, requestData)
+    const request = id
+      ? axios.patch("/timesheets/" + id, requestData)
       : axios.post("/timesheets", { timesheet: requestData });
 
     request

@@ -6,13 +6,13 @@ import axios from "../../../utils/axiosConfig";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-const LineItemModal = ({ open, onClose, lineItem = {} }) => {
+const LineItemModal = ({ open, onClose, lineItem = {}, addLineItem }) => {
   const [id, setId] = useState(lineItem.id || "");
   const [date, setDate] = useState(lineItem.date || "");
   const [minutes, setMinutes] = useState(lineItem.minutes || "");
   const [saving, setSaving] = useState(false);
 
-  const closeTimesheetModal = () => {
+  const closeLineItemModal = () => {
     onClose();
     setTimeout(() => {
       setId(lineItem.id || "");
@@ -31,14 +31,14 @@ const LineItemModal = ({ open, onClose, lineItem = {} }) => {
       timesheet_id: lineItem.timesheetId,
     };
 
-    const request = lineItem.id
-      ? axios.patch("/line_items/" + lineItem.id, requestData)
+    const request = id
+      ? axios.patch("/line_items/" + id, requestData)
       : axios.post("/line_items", { line_item: requestData });
 
     request
-      .then(() => {
-        onClose();
-        window.location.reload();
+      .then((response) => {
+        addLineItem(response.data);
+        closeLineItemModal();
       })
       .catch((error) => {
         console.error("Error loading data:", error);
@@ -49,21 +49,11 @@ const LineItemModal = ({ open, onClose, lineItem = {} }) => {
       });
   };
 
-  const closeLineItemModal = () => {
-    onClose();
-    setTimeout(() => {
-      setId(lineItem.id || "");
-      setDate(lineItem.date || "");
-      setMinutes(lineItem.minutes || "");
-      setSaving(false);
-    }, 500);
-  };
-
   return (
     <Modal
       title="Line Item Details"
       open={open}
-      handleClose={closeTimesheetModal}
+      handleClose={closeLineItemModal}
     >
       <Grid container spacing={2} style={{ paddingTop: "8px" }}>
         <Grid xs>
